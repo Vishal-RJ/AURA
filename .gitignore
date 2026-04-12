@@ -1,0 +1,16 @@
+# GitHub Token - NEVER commit this
+github AURA token.txt
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Node / build artifacts (if any future dev)
+node_modules/
+dist/
+.env
