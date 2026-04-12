@@ -195,12 +195,12 @@ A.U.R.A. successfully shifts the paradigm from **reactive damage control** to a 
 
 > **Team A.U.R.A.** — RMKEC, ECE 3rd Year
 
-| Member | Role |
-|---|---|
-| **RJ Vishal** | Team Lead / ML Architecture |
-| **Niranjan T** | Data Engineering & Features |
-| **Gobika S** | XAI & Explainability Layer |
-| **Ganthimathi V** | SLM & Action Gateway |
+| Role |
+|---|
+| Team Lead / ML Architecture |
+| Data Engineering & Features |
+| XAI & Explainability Layer |
+| SLM & Action Gateway |
 
 ---
 
