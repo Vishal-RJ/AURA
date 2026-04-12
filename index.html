@@ -593,6 +593,31 @@
 
   <div class="divider"></div>
 
+  <!-- ── PIPELINE FLOWCHART ── -->
+  <section id="pipeline" style="background:var(--surface); min-height:auto; padding: 5rem 2rem 6rem;">
+    <div class="container" style="text-align:center;">
+      <div class="fade-in" style="margin-bottom:3rem;">
+        <span class="sec-label">End-to-End Flow</span>
+        <h2 class="sec-title">Full A.U.R.A. Pipeline</h2>
+        <p class="sec-desc" style="margin:0 auto;">From raw telecom data to personalized retention action — every step, visualized and interactive.</p>
+      </div>
+      <div id="fc-wrap" class="fade-in" style="position:relative; width:100%; max-width:860px; margin:0 auto; cursor:default;">
+        <svg id="fc-svg" style="position:absolute;top:0;left:0;width:100%;pointer-events:none;overflow:visible;"></svg>
+        <div id="fc-nodes" style="position:relative;"></div>
+      </div>
+      <div id="fc-tooltip" style="
+        position:fixed; pointer-events:none; z-index:9999;
+        background:rgba(6,9,24,0.95); border:1px solid rgba(99,179,255,0.35);
+        border-radius:10px; padding:0.6rem 1rem; max-width:240px;
+        font-size:0.78rem; color:#e2e8f0; line-height:1.5;
+        box-shadow:0 0 24px rgba(59,130,246,0.25);
+        opacity:0; transition:opacity 0.15s; backdrop-filter:blur(12px);
+      "></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- ── DATASET ── -->
   <section id="dataset" style="min-height: auto; padding: 5rem 2rem;">
     <div class="container">
@@ -826,6 +851,300 @@
         a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
       });
     });
+    // ── FLOWCHART ENGINE ──────────────────────────────────────────────────────
+    (function buildFlowchart() {
+
+      // ── Node definitions ────────────────────────────────────────────────────
+      // Each node: id, label, icon, desc, row, col (0-based fractional), group
+      // Layout uses a 4-column grid. Wide nodes span cols 0-3 (centered).
+      const NODES = [
+        // Row 0 — Data Sources
+        { id:'cdr',      label:'CDR Logs',          icon:'📡', group:'cyan',
+          desc:'Call Detail Records — live usage patterns, call frequency & duration data.',
+          row:0, col:0 },
+        { id:'billing',  label:'Billing Data',       icon:'💳', group:'cyan',
+          desc:'Payment records, recharge history & plan upgrade/downgrade signals.',
+          row:0, col:1 },
+        { id:'support',  label:'Support Tickets',    icon:'🎧', group:'cyan',
+          desc:'Customer complaints, unresolved issues & real-time sentiment signals.',
+          row:0, col:2 },
+        { id:'usage',    label:'Usage Metrics',      icon:'📊', group:'cyan',
+          desc:'Daily data volume, call duration & roaming frequency trend analysis.',
+          row:0, col:3 },
+
+        // Row 1 — Pre-processing (wide, centered)
+        { id:'preproc',  label:'Pre-Processing Engine', icon:'⚙️', group:'blue',
+          desc:'SMOTE resampling to fix class imbalance + RFE feature selection + normalization pipeline.',
+          row:1, col:1.5, wide:true },
+
+        // Row 2 — ML Core (wide, centered)
+        { id:'mlcore',   label:'ML Core',            icon:'🧠', group:'purple',
+          desc:'XGBoost + Random Forest stacked ensemble. 50+ time-series features. Weekly retraining.',
+          row:2, col:1.5, wide:true },
+
+        // Row 3 — Parallel outputs
+        { id:'churn',    label:'Churn Score',        icon:'📈', group:'blue',
+          desc:'85%+ prediction accuracy with a 30-day early-warning window per customer.',
+          row:3, col:0.5 },
+        { id:'xailayer', label:'XAI Layer',          icon:'🔍', group:'purple',
+          desc:'SHAP/LIME decodes the ML black box into human-readable churn driver explanations.',
+          row:3, col:2.5 },
+
+        // Row 4 — Decision Engine (wide, centered)
+        { id:'engine',   label:'Decision Engine',    icon:'⚡', group:'cyan',
+          desc:'Rule-based logic maps churn reason → retention action. Example: Price → Targeted Discount.',
+          row:4, col:1.5, wide:true },
+
+        // Row 5 — SLM (wide, centered)
+        { id:'slm',      label:'Domain SLM',         icon:'🗣️', group:'pink',
+          desc:'Fine-tuned Small Language Model on telecom data. Generates hyper-personalized SMS/Email.',
+          row:5, col:1.5, wide:true },
+
+        // Row 6 — Action Gateway (wide, centered)
+        { id:'gateway',  label:'Action Gateway',     icon:'🚀', group:'blue',
+          desc:'API-driven dispatch layer pushing retention interventions in real time.',
+          row:6, col:1.5, wide:true },
+
+        // Row 7 — Output Actions
+        { id:'network',  label:'Network Recovery',   icon:'🛠️', group:'green',
+          desc:'Automatic data booster provisioning for customers experiencing poor signal quality.',
+          row:7, col:0.5 },
+        { id:'loyalty',  label:'Loyalty Rewards',    icon:'🎮', group:'green',
+          desc:'Gamified engagement & exclusive offers to increase customer stickiness.',
+          row:7, col:1.5 },
+        { id:'feedback', label:'Feedback Loop',      icon:'🔁', group:'green',
+          desc:'Learns from offer success/failure rates to continuously optimize future strategies.',
+          row:7, col:2.5 },
+      ];
+
+      const EDGES = [
+        ['cdr','preproc'], ['billing','preproc'], ['support','preproc'], ['usage','preproc'],
+        ['preproc','mlcore'],
+        ['mlcore','churn'], ['mlcore','xailayer'],
+        ['churn','engine'], ['xailayer','engine'],
+        ['engine','slm'],
+        ['slm','gateway'],
+        ['gateway','network'], ['gateway','loyalty'], ['gateway','feedback'],
+      ];
+
+      // ── Color palette ────────────────────────────────────────────────────────
+      const COLORS = {
+        cyan:   { fill:'rgba(6,182,212,0.12)',  border:'#06b6d4', glow:'rgba(6,182,212,0.5)',  text:'#67e8f9' },
+        blue:   { fill:'rgba(59,130,246,0.12)', border:'#3b82f6', glow:'rgba(59,130,246,0.5)', text:'#93c5fd' },
+        purple: { fill:'rgba(139,92,246,0.12)', border:'#8b5cf6', glow:'rgba(139,92,246,0.5)', text:'#c4b5fd' },
+        pink:   { fill:'rgba(236,72,153,0.12)', border:'#ec4899', glow:'rgba(236,72,153,0.5)', text:'#f9a8d4' },
+        green:  { fill:'rgba(16,185,129,0.12)', border:'#10b981', glow:'rgba(16,185,129,0.5)', text:'#6ee7b7' },
+      };
+
+      // ── Layout constants ────────────────────────────────────────────────────
+      const COLS       = 4;
+      const NODE_W     = 165;   // regular node width (px in 860-wide space)
+      const WIDE_W     = 380;   // wide node width
+      const NODE_H     = 76;
+      const ROW_H      = 130;
+      const TOTAL_W    = 860;
+      const COL_W      = TOTAL_W / COLS;   // 215
+      const WRAP_H     = ROW_H * 8 + NODE_H;
+
+      // Centre-x of a node
+      function cx(node) {
+        if (node.wide) return TOTAL_W / 2;
+        return (node.col + 0.5) * COL_W;
+      }
+      function cy(node) { return node.row * ROW_H + NODE_H / 2; }
+      function left(node) {
+        const w = node.wide ? WIDE_W : NODE_W;
+        return cx(node) - w / 2;
+      }
+      function top(node)  { return node.row * ROW_H; }
+
+      // ── Build lookup ─────────────────────────────────────────────────────────
+      const nodeMap = {};
+      NODES.forEach(n => nodeMap[n.id] = n);
+
+      // ── DOM refs ─────────────────────────────────────────────────────────────
+      const wrap    = document.getElementById('fc-wrap');
+      const svgEl   = document.getElementById('fc-svg');
+      const nodesEl = document.getElementById('fc-nodes');
+      const tooltip = document.getElementById('fc-tooltip');
+      if (!wrap) return;
+
+      // ── Scale factor (responsive) ────────────────────────────────────────────
+      function getScale() { return Math.min(1, wrap.clientWidth / TOTAL_W); }
+
+      // ── Render ───────────────────────────────────────────────────────────────
+      function render() {
+        const scale = getScale();
+        const scaledH = WRAP_H * scale;
+
+        wrap.style.height = scaledH + 'px';
+
+        // Scale the inner containers
+        [svgEl, nodesEl].forEach(el => {
+          el.style.transform       = `scale(${scale})`;
+          el.style.transformOrigin = 'top left';
+          el.style.width           = TOTAL_W + 'px';
+        });
+        svgEl.setAttribute('viewBox', `0 0 ${TOTAL_W} ${WRAP_H}`);
+        svgEl.setAttribute('height', WRAP_H);
+
+        // ── Draw nodes ─────────────────────────────────────────────────────────
+        nodesEl.innerHTML = '';
+        NODES.forEach(n => {
+          const c = COLORS[n.group];
+          const w = n.wide ? WIDE_W : NODE_W;
+          const div = document.createElement('div');
+          div.id = 'fcn-' + n.id;
+          div.style.cssText = `
+            position:absolute;
+            left:${left(n)}px; top:${top(n)}px;
+            width:${w}px; height:${NODE_H}px;
+            background:${c.fill};
+            border:1px solid ${c.border};
+            border-radius:14px;
+            display:flex; align-items:center; gap:10px;
+            padding:0 16px;
+            cursor:pointer;
+            transition: transform 0.22s cubic-bezier(.34,1.56,.64,1),
+                        box-shadow 0.22s ease,
+                        border-color 0.22s ease;
+            font-family:'Inter',sans-serif;
+            box-shadow: 0 0 0 rgba(0,0,0,0);
+          `;
+          div.innerHTML = `
+            <span style="font-size:1.4rem;flex-shrink:0;">${n.icon}</span>
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:0.78rem;font-weight:700;color:${c.text};letter-spacing:0.02em;">${n.label}</div>
+              <div style="font-size:0.62rem;color:#64748b;margin-top:1px;">${n.group.toUpperCase()} LAYER</div>
+            </div>
+          `;
+          // Hover
+          div.addEventListener('mouseenter', (e) => {
+            div.style.transform   = 'translateY(-5px) scale(1.04)';
+            div.style.boxShadow   = `0 0 28px ${c.glow}, 0 8px 24px rgba(0,0,0,0.4)`;
+            div.style.borderColor = c.border;
+            highlightEdges(n.id, true);
+            showTooltip(e, n);
+          });
+          div.addEventListener('mousemove', (e) => moveTooltip(e));
+          div.addEventListener('mouseleave', () => {
+            div.style.transform = '';
+            div.style.boxShadow = '';
+            highlightEdges(n.id, false);
+            hideTooltip();
+          });
+          nodesEl.appendChild(div);
+        });
+
+        // ── Draw SVG edges ──────────────────────────────────────────────────────
+        svgEl.innerHTML = `<defs>
+          ${Object.entries(COLORS).map(([k,v]) => `
+            <linearGradient id="grad-${k}" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="${v.border}" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="${v.border}" stop-opacity="0.3"/>
+            </linearGradient>
+            <filter id="glow-${k}" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          `).join('')}
+        </defs>`;
+
+        EDGES.forEach(([fromId, toId]) => {
+          const from = nodeMap[fromId];
+          const to   = nodeMap[toId];
+          if (!from || !to) return;
+
+          const x1 = cx(from), y1 = cy(from) + NODE_H / 2;
+          const x2 = cx(to),   y2 = cy(to)   - NODE_H / 2;
+          const midY = (y1 + y2) / 2;
+
+          const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+          const d = `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`;
+          const col = COLORS[from.group];
+
+          path.setAttribute('d', d);
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', `url(#grad-${from.group})`);
+          path.setAttribute('stroke-width', '1.5');
+          path.setAttribute('stroke-dasharray', '6 5');
+          path.setAttribute('opacity', '0.55');
+          path.dataset.from = fromId;
+          path.dataset.to   = toId;
+
+          // Flowing dash animation
+          const len = path.getTotalLength ? 200 : 200;
+          const anim = document.createElementNS('http://www.w3.org/2000/svg','animateTransform');
+          anim.setAttribute('attributeName','strokeDashoffset');
+          // Use animate instead
+          const a = document.createElementNS('http://www.w3.org/2000/svg','animate');
+          a.setAttribute('attributeName','stroke-dashoffset');
+          a.setAttribute('from','0');
+          a.setAttribute('to','-22');
+          a.setAttribute('dur','0.9s');
+          a.setAttribute('repeatCount','indefinite');
+          path.appendChild(a);
+
+          // Arrowhead dot at the end
+          const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          dot.setAttribute('r','3');
+          dot.setAttribute('fill', col.border);
+          dot.setAttribute('opacity','0.7');
+          const motionPath = document.createElementNS('http://www.w3.org/2000/svg','animateMotion');
+          motionPath.setAttribute('dur','1.8s');
+          motionPath.setAttribute('repeatCount','indefinite');
+          motionPath.setAttribute('calcMode','linear');
+          const mp = document.createElementNS('http://www.w3.org/2000/svg','mpath');
+          // Give path an id
+          const pid = `ep-${fromId}-${toId}`;
+          path.setAttribute('id', pid);
+          mp.setAttributeNS('http://www.w3.org/1999/xlink','href','#'+pid);
+          motionPath.appendChild(mp);
+          dot.appendChild(motionPath);
+
+          svgEl.appendChild(path);
+          svgEl.appendChild(dot);
+        });
+      }
+
+      // ── Edge highlight on node hover ──────────────────────────────────────────
+      function highlightEdges(nodeId, on) {
+        svgEl.querySelectorAll('path[data-from],[data-to]').forEach(p => {
+          const active = p.dataset.from === nodeId || p.dataset.to === nodeId;
+          if (on && active) {
+            p.setAttribute('stroke-width','2.8');
+            p.setAttribute('opacity','1');
+          } else {
+            p.setAttribute('stroke-width','1.5');
+            p.setAttribute('opacity','0.55');
+          }
+        });
+      }
+
+      // ── Tooltip ───────────────────────────────────────────────────────────────
+      function showTooltip(e, node) {
+        const c = COLORS[node.group];
+        tooltip.innerHTML = `<strong style="color:${c.text};display:block;margin-bottom:4px;">${node.icon} ${node.label}</strong>${node.desc}`;
+        tooltip.style.opacity = '1';
+        moveTooltip(e);
+      }
+      function moveTooltip(e) {
+        const pad = 14;
+        let x = e.clientX + pad, y = e.clientY + pad;
+        if (x + 250 > window.innerWidth)  x = e.clientX - 250 - pad;
+        if (y + 120 > window.innerHeight) y = e.clientY - 120 - pad;
+        tooltip.style.left = x + 'px';
+        tooltip.style.top  = y + 'px';
+      }
+      function hideTooltip() { tooltip.style.opacity = '0'; }
+
+      // ── Init ─────────────────────────────────────────────────────────────────
+      render();
+      window.addEventListener('resize', render);
+
+    })();
+    // ── END FLOWCHART ENGINE ──────────────────────────────────────────────────
+
   </script>
 </body>
 </html>
