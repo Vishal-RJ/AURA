@@ -193,14 +193,21 @@ A.U.R.A. successfully shifts the paradigm from **reactive damage control** to a 
 
 ## 👥 Team
 
-> **Team A.U.R.A.** — RMKEC, ECE 3rd Year
+> **Team A.U.R.A.** — RMKEC, 3rd Year
 
-| Role |
+| Member | Role |
+|---|---|
+| **RJ Vishal** | Team Lead / ML Architecture |
+| **Nivedhitha** | Data Engineering & Features |
+| **Harris** | XAI & Explainability Layer |
+| **Ganthimathi V** | SLM & Action Gateway |
+
+### 💡 Minds Behind the Idea
+
+| Member |
 |---|
-| Team Lead / ML Architecture |
-| Data Engineering & Features |
-| XAI & Explainability Layer |
-| SLM & Action Gateway |
+| **Niranjan** |
+| **Gobika** |
 
 ---
 
@@ -225,6 +232,6 @@ No dependencies. Pure HTML + CSS + JavaScript.
 
 <div align="center">
 
-**Made with ❤️ by Team A.U.R.A. · RMKEC ECE**
+**Made with ❤️ by Team A.U.R.A. · RMKEC**
 
 </div>
