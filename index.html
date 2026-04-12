@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A.U.R.A. — Agentic User Retention Assistant</title>
+  <meta name="description" content="A.U.R.A. — AI-powered telecom churn prediction and retention platform by Team AURA, RMKEC ECE 3rd Year." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #060918;
+      --surface: #0d1226;
+      --card: #111829;
+      --border: rgba(99,179,255,0.12);
+      --glow-blue: #3b82f6;
+      --glow-purple: #8b5cf6;
+      --glow-cyan: #06b6d4;
+      --glow-pink: #ec4899;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --accent: #63b3ff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(6,9,24,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--glow-blue), var(--glow-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: 0.05em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.875rem;
+      font-weight: 500; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-badge {
+      font-size: 0.75rem; font-weight: 600;
+      background: linear-gradient(135deg, var(--glow-blue), var(--glow-purple));
+      padding: 0.3rem 0.9rem; border-radius: 999px; color: #fff;
+    }
+
+    /* ── SECTIONS ── */
+    section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 6rem 2rem 4rem; }
+    .container { max-width: 1200px; width: 100%; margin: 0 auto; }
+
+    /* ── HERO ── */
+    #hero {
+      background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(59,130,246,0.15) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 60% at 80% 50%, rgba(139,92,246,0.08) 0%, transparent 60%),
+                  var(--bg);
+      text-align: center;
+      flex-direction: column;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--glow-cyan);
+      border: 1px solid rgba(6,182,212,0.3); border-radius: 999px;
+      padding: 0.35rem 1rem; margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(4rem, 10vw, 8rem);
+      font-weight: 900; letter-spacing: -0.02em; line-height: 1;
+      background: linear-gradient(135deg, #fff 30%, var(--glow-blue) 70%, var(--glow-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .hero-subtitle {
+      font-size: clamp(0.9rem, 2vw, 1.1rem); font-weight: 400;
+      color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .hero-desc {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: #94a3b8; max-width: 700px; margin: 0 auto 3rem;
+      line-height: 1.7;
+    }
+    .hero-team {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 0.75rem;
+      margin-bottom: 3rem;
+    }
+    .team-chip {
+      padding: 0.4rem 1.1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.85rem; font-weight: 500; color: var(--text);
+    }
+    .hero-cta a {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: linear-gradient(135deg, var(--glow-blue), var(--glow-purple));
+      color: #fff; text-decoration: none;
+      padding: 0.85rem 2.2rem; border-radius: 999px;
+      font-weight: 600; font-size: 1rem;
+      box-shadow: 0 0 40px rgba(59,130,246,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .hero-cta a:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(59,130,246,0.5); }
+
+    /* Floating orbs */
+    .orb {
+      position: absolute; border-radius: 50%; pointer-events: none;
+      filter: blur(80px); opacity: 0.35;
+      animation: float 8s ease-in-out infinite;
+    }
+    .orb-1 { width: 400px; height: 400px; background: var(--glow-blue); top: 5%; left: -10%; animation-delay: 0s; }
+    .orb-2 { width: 300px; height: 300px; background: var(--glow-purple); top: 15%; right: -5%; animation-delay: 3s; }
+    .orb-3 { width: 200px; height: 200px; background: var(--glow-cyan); bottom: 15%; left: 40%; animation-delay: 5s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    /* ── SECTION HEADER ── */
+    .sec-label {
+      display: inline-block;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--glow-purple); margin-bottom: 1rem;
+    }
+    .sec-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+      line-height: 1.15; margin-bottom: 1rem;
+    }
+    .sec-desc { font-size: 1rem; color: var(--muted); line-height: 1.7; max-width: 560px; }
+
+    /* ── PROBLEM ── */
+    #problem { background: var(--surface); }
+    .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .problem-stat {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.05));
+      border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 20px; padding: 2rem;
+      display: flex; align-items: center; gap: 2rem;
+    }
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 5rem; font-weight: 900;
+      color: #ef4444; line-height: 1;
+      text-shadow: 0 0 40px rgba(239,68,68,0.5);
+    }
+    .stat-desc { font-size: 1.1rem; color: var(--text); line-height: 1.6; }
+    .problem-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.75rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .problem-card:hover { border-color: rgba(239,68,68,0.4); transform: translateY(-4px); }
+    .problem-card h3 {
+      font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;
+      color: #f87171;
+    }
+    .problem-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── OBJECTIVES ── */
+    #objective { background: var(--bg); }
+    .obj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .obj-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      display: flex; gap: 1.25rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .obj-card:hover { border-color: var(--glow-blue); transform: translateY(-4px); }
+    .obj-icon {
+      flex-shrink: 0; width: 52px; height: 52px;
+      border-radius: 14px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+    }
+    .obj-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .obj-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── SOLUTION ── */
+    #solution { background: var(--surface); }
+    .sol-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .sol-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .sol-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--glow-blue), var(--glow-purple));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .sol-card:hover::before { opacity: 1; }
+    .sol-card:hover { border-color: rgba(99,179,255,0.3); transform: translateY(-4px); }
+    .sol-tag {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--glow-cyan); margin-bottom: 0.75rem;
+    }
+    .sol-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .sol-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── ARCHITECTURE ── */
+    #architecture { background: var(--bg); flex-direction: column; }
+    .arch-pipeline {
+      display: flex; align-items: stretch; gap: 0;
+      width: 100%; margin-top: 3rem;
+      overflow-x: auto; padding-bottom: 1rem;
+    }
+    .arch-step {
+      flex: 1; min-width: 180px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 0; padding: 2rem 1.5rem;
+      position: relative; text-align: center;
+      transition: background 0.3s;
+    }
+    .arch-step:first-child { border-radius: 20px 0 0 20px; }
+    .arch-step:last-child { border-radius: 0 20px 20px 0; }
+    .arch-step:hover { background: rgba(59,130,246,0.08); }
+    .arch-step::after {
+      content: '→'; position: absolute; right: -14px; top: 50%; transform: translateY(-50%);
+      color: var(--glow-blue); font-size: 1.4rem; z-index: 2;
+    }
+    .arch-step:last-child::after { content: ''; }
+    .arch-step-num {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em;
+      color: var(--glow-purple); text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .arch-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .arch-step h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .arch-step p { font-size: 0.78rem; color: var(--muted); line-height: 1.55; }
+
+    /* ── DATASET ── */
+    #dataset { background: var(--surface); }
+    .dataset-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .ds-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .ds-card:hover { border-color: var(--glow-cyan); transform: translateY(-4px); }
+    .ds-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .ds-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--glow-cyan); }
+    .ds-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── ML MODEL ── */
+    #mlmodel { background: var(--bg); }
+    .ml-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+    .ml-accuracy {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 1rem; text-align: center;
+    }
+    .accuracy-ring {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: conic-gradient(var(--glow-blue) 0% 85%, rgba(99,179,255,0.1) 85% 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      box-shadow: 0 0 60px rgba(59,130,246,0.3);
+    }
+    .accuracy-ring::before {
+      content: ''; position: absolute;
+      inset: 12px; border-radius: 50%;
+      background: var(--bg);
+    }
+    .accuracy-val {
+      position: relative; z-index: 1;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.5rem; font-weight: 900; color: #fff;
+    }
+    .accuracy-label { color: var(--muted); font-size: 0.875rem; font-weight: 500; }
+    .ml-bullets { display: flex; flex-direction: column; gap: 1.25rem; }
+    .ml-bullet {
+      display: flex; gap: 1rem; align-items: flex-start;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.25rem;
+      transition: border-color 0.3s;
+    }
+    .ml-bullet:hover { border-color: var(--glow-blue); }
+    .bullet-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--glow-blue); flex-shrink: 0; margin-top: 6px;
+    }
+    .ml-bullet p { font-size: 0.9rem; color: var(--text); line-height: 1.6; }
+
+    /* ── XAI ── */
+    #xai { background: var(--surface); }
+    .xai-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .xai-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .xai-card:hover { border-color: var(--glow-purple); transform: translateY(-4px); }
+    .xai-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--glow-purple); }
+    .xai-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── RETENTION ENGINE ── */
+    #retention { background: var(--bg); flex-direction: column; }
+    .logic-card {
+      background: linear-gradient(135deg, rgba(6,182,212,0.1), rgba(139,92,246,0.08));
+      border: 1px solid rgba(6,182,212,0.25);
+      border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem;
+    }
+    .logic-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--glow-cyan); margin-bottom: 0.5rem; }
+    .logic-code {
+      font-family: 'Space Grotesk', monospace;
+      font-size: 1rem; color: #fff;
+    }
+    .logic-code span { color: var(--glow-blue); }
+    .retention-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    .ret-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.75rem;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .ret-card:hover { border-color: var(--glow-cyan); transform: translateY(-4px); }
+    .ret-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .ret-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .ret-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── SLM ── */
+    #slm { background: var(--surface); }
+    .slm-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .slm-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .slm-card:hover { border-color: var(--glow-pink); transform: translateY(-4px); }
+    .slm-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--glow-pink); }
+    .slm-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── CONCLUSION ── */
+    #conclusion {
+      background: radial-gradient(ellipse 80% 80% at 50% 120%, rgba(59,130,246,0.15) 0%, transparent 60%), var(--bg);
+      text-align: center; flex-direction: column;
+    }
+    .conc-stat {
+      display: inline-flex; flex-direction: column; align-items: center;
+      background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.1));
+      border: 1px solid rgba(99,179,255,0.25);
+      border-radius: 20px; padding: 1.5rem 3rem; margin-bottom: 3rem;
+    }
+    .conc-stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 4rem; font-weight: 900; color: var(--glow-blue);
+    }
+    .conc-stat-label { font-size: 0.875rem; color: var(--muted); }
+    .conc-points { display: flex; flex-direction: column; gap: 1rem; max-width: 700px; margin: 0 auto 3rem; }
+    .conc-point {
+      display: flex; align-items: flex-start; gap: 1rem; text-align: left;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.25rem;
+    }
+    .conc-bullet { color: var(--glow-cyan); font-size: 1.2rem; flex-shrink: 0; }
+    .conc-point p { font-size: 0.9rem; color: var(--text); line-height: 1.6; }
+    .footer-team {
+      font-size: 0.85rem; color: var(--muted);
+    }
+    .footer-team span { color: var(--accent); font-weight: 600; }
+
+    /* ── LAYOUT HELPERS ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+
+    /* ── FADE IN ANIMATION ── */
+    .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .two-col, .obj-grid, .sol-grid, .dataset-grid, .xai-grid, .slm-grid, .ml-layout, .problem-grid, .retention-grid { grid-template-columns: 1fr; }
+      .problem-stat { flex-direction: column; gap: 1rem; }
+      .arch-pipeline { flex-direction: column; }
+      .arch-step { border-radius: 16px !important; }
+      .arch-step::after { content: '↓'; right: 50%; top: auto; bottom: -16px; transform: translateX(50%); }
+      .arch-step:last-child::after { content: ''; }
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-logo">A.U.R.A.</span>
+    <ul class="nav-links">
+      <li><a href="#problem">Problem</a></li>
+      <li><a href="#objective">Objectives</a></li>
+      <li><a href="#solution">Solution</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#mlmodel">ML Model</a></li>
+      <li><a href="#xai">XAI</a></li>
+      <li><a href="#conclusion">Conclusion</a></li>
+    </ul>
+    <span class="nav-badge">RMKEC · ECE 3rd Year</span>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="container fade-in">
+      <div class="hero-eyebrow">RMKEC · ECE 3rd Year</div>
+      <h1 class="hero-title">A.U.R.A.</h1>
+      <p class="hero-subtitle">Agentic User Retention Assistant</p>
+      <p class="hero-desc">
+        Empowering Telecoms with Agentic Intelligence to <strong>Predict, Reason, and Act</strong> before a Customer Leaves.
+      </p>
+      <div class="hero-team">
+        <span class="team-chip">RJ Vishal</span>
+        <span class="team-chip">Niranjan T</span>
+        <span class="team-chip">Gobika S</span>
+        <span class="team-chip">Ganthimathi V</span>
+      </div>
+      <div class="hero-cta">
+        <a href="#problem">Explore the Project ↓</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── PROBLEM ── -->
+  <section id="problem">
+    <div class="container">
+      <div class="two-col">
+        <div class="fade-in">
+          <span class="sec-label">The Challenge</span>
+          <h2 class="sec-title">Why Telecom Churn is a Crisis</h2>
+          <p class="sec-desc">The telecom industry bleeds customers silently — traditional systems detect churn only after the damage is done.</p>
+        </div>
+        <div class="problem-grid fade-in">
+          <div class="problem-stat">
+            <div class="stat-num">30%</div>
+            <div class="stat-desc">Annual churn rate faced by telecom companies due to <strong>aggressive pricing</strong> and <strong>network fluctuations</strong>. Every lost customer represents a cascading revenue failure.</div>
+          </div>
+          <div class="problem-card">
+            <h3>⏰ Reactive Post-Mortem</h3>
+            <p>Traditional systems identify churn <em>after</em> the SIM is deactivated, making recovery impossible.</p>
+          </div>
+          <div class="problem-card">
+            <h3>🎯 Lack of Personalization</h3>
+            <p>Generic "one-size-fits-all" offers fail to address individual customer pain points.</p>
+          </div>
+          <div class="problem-card">
+            <h3>📉 Revenue Erosion</h3>
+            <p>Acquiring a new customer is <strong>5× more expensive</strong> than retaining an existing one.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── OBJECTIVE ── -->
+  <section id="objective">
+    <div class="container">
+      <div style="text-align:center; margin-bottom: 3rem;" class="fade-in">
+        <span class="sec-label">What We Set Out To Do</span>
+        <h2 class="sec-title">Project Objectives</h2>
+      </div>
+      <div class="obj-grid fade-in">
+        <div class="obj-card">
+          <div class="obj-icon" style="background:rgba(59,130,246,0.15);">🔍</div>
+          <div>
+            <h3>Early Detection</h3>
+            <p>Predict high-risk customers at least <strong>30 days</strong> before they decide to leave, enabling proactive intervention.</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon" style="background:rgba(139,92,246,0.15);">🔬</div>
+          <div>
+            <h3>Granular Analysis</h3>
+            <p>Isolate <strong>technical</strong> (network), <strong>financial</strong> (billing), or <strong>competitive</strong> (offers) churn drivers per customer.</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon" style="background:rgba(6,182,212,0.15);">⚡</div>
+          <div>
+            <h3>Automated Intervention</h3>
+            <p>Close the loop between data insights and marketing actions <strong>without human delay</strong>.</p>
+          </div>
+        </div>
+        <div class="obj-card">
+          <div class="obj-icon" style="background:rgba(236,72,153,0.15);">💎</div>
+          <div>
+            <h3>Customer Lifetime Value</h3>
+            <p>Maximize long-term revenue by improving <strong>brand loyalty</strong> and customer satisfaction scores.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── SOLUTION ── -->
+  <section id="solution">
+    <div class="container">
+      <div class="two-col">
+        <div class="fade-in">
+          <span class="sec-label">Our Answer</span>
+          <h2 class="sec-title">Proposed Solution</h2>
+          <p class="sec-desc">A.U.R.A. is not just a predictor — it's a full <strong>prescriptive retention ecosystem</strong> powered by in-house AI.</p>
+        </div>
+        <div class="sol-grid fade-in">
+          <div class="sol-card">
+            <div class="sol-tag">Core</div>
+            <h3>In-House Proprietary AI</h3>
+            <p>A custom ML core + a domain-specific <strong>Small Language Model (SLM)</strong> — no 3rd party dependency.</p>
+          </div>
+          <div class="sol-card">
+            <div class="sol-tag">Strategy</div>
+            <h3>Prescriptive Retention</h3>
+            <p>Not just <em>"who"</em> will leave, but an AI-generated personalized strategy for <em>"how"</em> to retain them.</p>
+          </div>
+          <div class="sol-card">
+            <div class="sol-tag">Trust</div>
+            <h3>Explainable AI (XAI)</h3>
+            <p>Custom interpretation layer using SHAP/LIME to decode model decisions for human agents.</p>
+          </div>
+          <div class="sol-card">
+            <div class="sol-tag">Unified</div>
+            <h3>End-to-End Pipeline</h3>
+            <p>A platform that ingests <strong>live CDR</strong> (Call Detail Records) and generates retention actions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── ARCHITECTURE ── -->
+  <section id="architecture">
+    <div class="container" style="text-align:center;">
+      <div class="fade-in" style="margin-bottom: 3rem;">
+        <span class="sec-label">System Design</span>
+        <h2 class="sec-title">System Architecture</h2>
+        <p class="sec-desc" style="margin: 0 auto;">Four interconnected layers forming a complete AI retention loop — from raw data to personalized action.</p>
+      </div>
+      <div class="arch-pipeline fade-in">
+        <div class="arch-step">
+          <div class="arch-step-num">Layer 01</div>
+          <div class="arch-icon">📡</div>
+          <h3>Data Ingestion</h3>
+          <p>High-speed processing of usage logs, billing history &amp; support tickets</p>
+        </div>
+        <div class="arch-step">
+          <div class="arch-step-num">Layer 02</div>
+          <div class="arch-icon">🧠</div>
+          <h3>ML Core</h3>
+          <p>Feature engineering + ensemble boosted decision trees (XGBoost + RF)</p>
+        </div>
+        <div class="arch-step">
+          <div class="arch-step-num">Layer 03</div>
+          <div class="arch-icon">🔎</div>
+          <h3>Explainability</h3>
+          <p>SHAP/LIME integration to decode the AI "Black Box" into human-readable drivers</p>
+        </div>
+        <div class="arch-step">
+          <div class="arch-step-num">Layer 04</div>
+          <div class="arch-icon">🚀</div>
+          <h3>Action Gateway</h3>
+          <p>API-driven triggers pushing notifications, SMS, or vouchers to the user</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── DATASET ── -->
+  <section id="dataset" style="min-height: auto; padding: 5rem 2rem;">
+    <div class="container">
+      <div style="text-align:center; margin-bottom: 2.5rem;" class="fade-in">
+        <span class="sec-label">Input Intelligence</span>
+        <h2 class="sec-title">Dataset &amp; Features</h2>
+      </div>
+      <div class="dataset-grid fade-in">
+        <div class="ds-card">
+          <div class="ds-icon">📶</div>
+          <h3>Service Quality</h3>
+          <p>Monitors call drop rates, 5G latency, and signal strength in the user's primary location to identify network-driven churn.</p>
+        </div>
+        <div class="ds-card">
+          <div class="ds-icon">🧭</div>
+          <h3>Behavioral Data</h3>
+          <p>Interaction with customer support and frequency of "Plan Expiry" reminders ignored — revealing dissatisfaction patterns.</p>
+        </div>
+        <div class="ds-card">
+          <div class="ds-icon">🌐</div>
+          <h3>External Factors</h3>
+          <p>Compares local competitor signal coverage and relative pricing of rival service packs in real-time.</p>
+        </div>
+        <div class="ds-card">
+          <div class="ds-icon">📊</div>
+          <h3>Usage Metrics</h3>
+          <p>Analyzes daily data volume, call duration, and roaming frequency to identify sudden usage drops.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── ML MODEL ── -->
+  <section id="mlmodel">
+    <div class="container">
+      <div class="ml-layout">
+        <div class="fade-in">
+          <span class="sec-label">Prediction Engine</span>
+          <h2 class="sec-title">Custom Machine Learning Model</h2>
+          <p class="sec-desc" style="margin-bottom: 2rem;">A multi-stacked ensemble optimized for imbalanced telecom datasets with continuous self-improvement.</p>
+          <div class="ml-bullets">
+            <div class="ml-bullet">
+              <div class="bullet-dot"></div>
+              <p><strong>Multi-Stacked Ensemble</strong>: XGBoost + Random Forest optimized for class imbalance in telecom churn datasets.</p>
+            </div>
+            <div class="ml-bullet">
+              <div class="bullet-dot"></div>
+              <p><strong>Custom Transformer</strong>: Processes 50+ time-series features like "latency spikes" and "recharge gaps."</p>
+            </div>
+            <div class="ml-bullet">
+              <div class="bullet-dot"></div>
+              <p><strong>SMOTE</strong> (Synthetic Minority Over-sampling) + <strong>RFE</strong> (Recursive Feature Elimination) to maximize prediction accuracy.</p>
+            </div>
+            <div class="ml-bullet">
+              <div class="bullet-dot"></div>
+              <p><strong>Weekly Feedback Loops</strong>: The model retrains automatically to adapt to changing market trends.</p>
+            </div>
+          </div>
+        </div>
+        <div class="ml-accuracy fade-in">
+          <div class="accuracy-ring">
+            <div class="accuracy-val">85%</div>
+          </div>
+          <div class="accuracy-label">Prediction Accuracy</div>
+          <p style="font-size:0.8rem; color:var(--muted); text-align:center; max-width:220px;">Achieved through SMOTE resampling and ensemble stacking on real-world telecom CDR data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── XAI ── -->
+  <section id="xai">
+    <div class="container">
+      <div class="two-col">
+        <div class="fade-in">
+          <span class="sec-label">Transparency Layer</span>
+          <h2 class="sec-title">Explainable AI &amp; The Reasoning Engine</h2>
+          <p class="sec-desc">Eliminating the AI "Black Box" — every prediction comes with a human-readable explanation of <em>why</em> a customer will churn.</p>
+        </div>
+        <div class="xai-grid fade-in">
+          <div class="xai-card">
+            <h3>Custom SHAP Integration</h3>
+            <p>Maps high-dimensional ML outputs into human-readable <strong>"Churn Drivers"</strong> visible to human agents.</p>
+          </div>
+          <div class="xai-card">
+            <h3>Local vs. Global Insights</h3>
+            <p>Explains why a <em>specific user</em> is leaving (Local) while identifying <em>network-wide</em> failures (Global).</p>
+          </div>
+          <div class="xai-card">
+            <h3>Diagnostic Transparency</h3>
+            <p>Shows the exact correlation between <strong>service drops</strong> and <strong>churn risk score</strong>.</p>
+          </div>
+          <div class="xai-card">
+            <h3>The Reasoning Layer</h3>
+            <p>SHAP output feeds specific context into our <strong>custom LLM</strong> for personalized retention message generation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── RETENTION ENGINE ── -->
+  <section id="retention">
+    <div class="container" style="text-align:center;">
+      <div class="fade-in" style="margin-bottom: 2.5rem;">
+        <span class="sec-label">Action Loop</span>
+        <h2 class="sec-title">Retention Decision Engine</h2>
+      </div>
+      <div class="fade-in" style="max-width: 700px; margin: 0 auto 2.5rem;">
+        <div class="logic-card">
+          <div class="logic-label">Logic Mapping — Example Rule</div>
+          <div class="logic-code">IF <span>Churn Reason = "Price"</span> → THEN <span>Trigger = "Targeted Discount / Upgrade"</span></div>
+        </div>
+      </div>
+      <div class="retention-grid fade-in">
+        <div class="ret-card">
+          <div class="ret-icon">🛠️</div>
+          <h3>Network Recovery</h3>
+          <p>Automatic provisioning of data boosters for users experiencing poor signal quality.</p>
+        </div>
+        <div class="ret-card">
+          <div class="ret-icon">🎮</div>
+          <h3>Loyalty Rewards</h3>
+          <p>Gamified engagement for low-usage users to increase "stickiness" within the ecosystem.</p>
+        </div>
+        <div class="ret-card">
+          <div class="ret-icon">🔄</div>
+          <h3>Feedback Loop</h3>
+          <p>Learning from the success or failure of past offers to optimize future retention strategies.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── SLM ── -->
+  <section id="slm" style="min-height: auto; padding: 5rem 2rem;">
+    <div class="container">
+      <div class="two-col">
+        <div class="fade-in">
+          <span class="sec-label">Language Intelligence</span>
+          <h2 class="sec-title">Domain-Specific LLM (SLM)</h2>
+          <p class="sec-desc">A lightweight Small Language Model tuned exclusively on telecom data — generating hyper-personalized retention messages.</p>
+        </div>
+        <div class="slm-grid fade-in">
+          <div class="slm-card">
+            <h3>Model Architecture</h3>
+            <p>Built using <strong>knowledge distillation</strong> from larger models into a compact, edge-deployable SLM.</p>
+          </div>
+          <div class="slm-card">
+            <h3>Domain Tuning</h3>
+            <p>Fine-tuned on telecom-specific datasets: plans, network terminology, and customer service logs.</p>
+          </div>
+          <div class="slm-card">
+            <h3>Privacy &amp; Security</h3>
+            <p>Sensitive customer data <strong>never leaves</strong> the secure local environment — zero 3rd party API leaks.</p>
+          </div>
+          <div class="slm-card">
+            <h3>Dynamic Content</h3>
+            <p>Generates hyper-personalized retention messages via <strong>SMS/Email</strong> based on individual churn reason.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── CONCLUSION ── -->
+  <section id="conclusion">
+    <div class="orb orb-1" style="opacity:0.2;"></div>
+    <div class="container fade-in">
+      <span class="sec-label">Impact &amp; Roadmap</span>
+      <h2 class="sec-title" style="margin: 0 auto 2rem; max-width: 600px;">From Reactive to Proactive — A.U.R.A.'s Impact</h2>
+      <div class="conc-stat">
+        <div class="conc-stat-num">100%</div>
+        <div class="conc-stat-label">Data Sovereignty — No 3rd party exposure</div>
+      </div>
+      <div class="conc-points">
+        <div class="conc-point">
+          <span class="conc-bullet">✅</span>
+          <p>Successfully moved the needle from <strong>reactive "Damage Control"</strong> to an in-house, proactive AI ecosystem.</p>
+        </div>
+        <div class="conc-point">
+          <span class="conc-bullet">🎙️</span>
+          <p><strong>GenAI 2.0 Roadmap</strong>: Moving toward Multimodal AI that can analyze customer sentiment from voice-call recordings.</p>
+        </div>
+        <div class="conc-point">
+          <span class="conc-bullet">⚙️</span>
+          <p>Implementing SMOTE and RFE achieving <strong>85%+ prediction accuracy</strong> on real telecom datasets.</p>
+        </div>
+        <div class="conc-point">
+          <span class="conc-bullet">🌐</span>
+          <p>Optimizing the custom SLM to run directly on <strong>network edge nodes</strong> for sub-second retention triggers.</p>
+        </div>
+      </div>
+      <p class="footer-team">
+        <span>Team A.U.R.A.</span> · RMKEC ECE 3rd Year
+      </p>
+    </div>
+  </section>
+
+  <script>
+    // Intersection Observer for fade-in animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Smooth active nav highlight
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 120) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+      });
+    });
+  </script>
+</body>
+</html>
