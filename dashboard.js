@@ -78,30 +78,34 @@ const slmBox = document.getElementById('slm-box');
 const slmContent = document.getElementById('slm-content');
 const slmStatus = document.getElementById('slm-status');
 
-// Render User List as Cards
+// Render User List
 function renderUsers() {
   userList.innerHTML = customers.map(user => `
-    <div class="user-card ${selectedCustomerId === user.id ? 'selected' : ''}" onclick="selectUser('${user.id}')">
-      <div class="user-info">
-        <h3>${user.id}</h3>
-        <p>${user.name}</p>
-      </div>
-      <div style="text-align: right;">
-        <div class="risk-tag" style="background: ${getRiskColor(user.riskScore, true)}; color: ${getRiskColor(user.riskScore, false)};">
-            ${user.riskScore}% Risk
+    <tr class="user-row ${selectedCustomerId === user.id ? 'selected' : ''}" onclick="selectUser('${user.id}')">
+      <td>
+        <div style="font-weight: 600;">${user.id}</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">${user.name}</div>
+      </td>
+      <td>
+        <span class="risk-badge ${getRiskClass(user.riskScore)}">${user.riskScore}% Probability</span>
+      </td>
+      <td>
+        <div style="font-size: 0.875rem;">${user.driver}</div>
+      </td>
+      <td>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <div style="width: 6px; height: 6px; border-radius: 50%; background: ${user.riskScore > 80 ? 'var(--danger)' : 'var(--warning)'};"></div>
+          <span style="font-size: 0.75rem;">Action Required</span>
         </div>
-        <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.25rem;">
-            ${user.driver}
-        </div>
-      </div>
-    </div>
+      </td>
+    </tr>
   `).join('');
 }
 
-function getRiskColor(score, isBg) {
-  if (score > 80) return isBg ? 'rgba(239, 68, 68, 0.1)' : 'var(--danger)';
-  if (score > 60) return isBg ? 'rgba(245, 158, 11, 0.1)' : 'var(--warning)';
-  return isBg ? 'rgba(34, 197, 94, 0.1)' : 'var(--success)';
+function getRiskClass(score) {
+  if (score > 80) return 'risk-high';
+  if (score > 60) return 'risk-medium';
+  return 'risk-low';
 }
 
 // Select User logic
