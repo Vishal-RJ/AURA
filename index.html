@@ -83,7 +83,7 @@
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(4rem, 10vw, 8rem);
       font-weight: 900; letter-spacing: -0.02em; line-height: 1;
-      background: linear-gradient(135deg, #fff 30%, var(--glow-blue) 70%, var(--glow-purple));
+      background: linear-gradient(135deg, var(--text) 30%, var(--glow-blue) 70%, var(--glow-purple));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       margin-bottom: 0.5rem;
     }
@@ -282,7 +282,7 @@
     .accuracy-val {
       position: relative; z-index: 1;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 2.5rem; font-weight: 900; color: #fff;
+      font-size: 2.5rem; font-weight: 900; color: var(--text);
     }
     .accuracy-label { color: var(--muted); font-size: 0.875rem; font-weight: 500; }
     .ml-bullets { display: flex; flex-direction: column; gap: 1.25rem; }
@@ -321,7 +321,7 @@
     .logic-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--glow-cyan); margin-bottom: 0.5rem; }
     .logic-code {
       font-family: 'Space Grotesk', monospace;
-      font-size: 1rem; color: #fff;
+      font-size: 1rem; color: var(--text);
     }
     .logic-code span { color: var(--glow-blue); }
     .retention-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
@@ -440,7 +440,7 @@
 
       <div class="hero-cta" style="display: flex; gap: 1rem; justify-content: center;">
         <a href="#problem">Explore the Project ↓</a>
-        <a href="dashboard.html" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border); box-shadow: none;">Company Demo (RDE/SLM) →</a>
+        <a href="dashboard.html" style="background: #fff; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05); color: var(--text);">Company Demo (RDE/SLM) →</a>
       </div>
     </div>
   </section>

@@ -114,8 +114,8 @@ body {
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
+  background: rgba(249, 115, 22, 0.05);
+  color: var(--primary);
   transform: translateX(4px);
 }
 
@@ -197,7 +197,7 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 2rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-main);
 }
 
 .stat-trend {
@@ -290,9 +290,9 @@ body {
 }
 
 .user-row.selected td {
-  background: rgba(59, 130, 246, 0.08);
-  border-color: rgba(59, 130, 246, 0.3);
-  color: #fff;
+  background: rgba(249, 115, 22, 0.08);
+  border-color: rgba(249, 115, 22, 0.3);
+  color: var(--primary);
 }
 
 .risk-badge {
@@ -347,8 +347,8 @@ body {
   padding: 1rem;
   border-radius: 16px;
   border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.03);
-  color: #fff;
+  background: #fff;
+  color: var(--text-main);
   font-weight: 600;
   font-size: 0.8125rem;
   cursor: pointer;
@@ -357,6 +357,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.625rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .action-btn:hover {
@@ -495,7 +496,7 @@ body {
 
 .customer-id {
   font-weight: 700;
-  color: #fff;
+  color: var(--text-main);
   font-family: 'Space Grotesk', sans-serif;
 }
 
