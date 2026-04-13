@@ -21,9 +21,9 @@
       <div class="logo-icon">
         <i data-lucide="shield-check" style="color: white; width: 18px;"></i>
       </div>
-      <span class="logo-text">A.U.R.A.</span>
+      <span class="logo-text">AURA</span>
     </div>
-
+    
     <nav>
       <ul class="nav-menu">
         <li class="nav-item active" onclick="switchView('risk-overview', this)">
@@ -48,16 +48,11 @@
         </li>
       </ul>
     </nav>
-
-    <div
-      style="margin-top: auto; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid var(--border);">
-      <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem;">AGENT STATUS</p>
-      <div style="display: flex; align-items: center; gap: 0.5rem;">
-        <div
-          style="width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px var(--success);">
-        </div>
-        <span style="font-size: 0.8rem; font-weight: 600;">AURA AI Active</span>
-      </div>
+    
+    <div class="support-card">
+      <h4>Need help?</h4>
+      <p>Contact our agentic support team for system integration help.</p>
+      <button>Get Support</button>
     </div>
   </aside>
 
@@ -66,247 +61,244 @@
     <header class="header">
       <div class="welcome">
         <h1 id="view-title">Retention Dashboard</h1>
-        <p id="view-subtitle">Welcome back, Operator. AURA has identified 12 new high-risk clusters.</p>
+        <p id="view-subtitle">Welcome back, Operator. Here's what's happening today.</p>
       </div>
-      <div style="display: flex; gap: 1rem;">
-        <button class="action-btn" style="padding: 0.5rem 1rem;">
-          <i data-lucide="refresh-cw" style="width: 16px;"></i>
-          Sync CDR Logs
-        </button>
+      <div style="display: flex; gap: 1.5rem; align-items: center;">
+        <div class="search-bar">
+          <i data-lucide="search" style="width: 16px; color: var(--text-muted);"></i>
+          <input type="text" placeholder="Search customers...">
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; border-left: 1px solid var(--border); padding-left: 1.5rem;">
+          <div style="text-align: right;">
+            <div style="font-size: 0.875rem; font-weight: 700;">Arthur Pendragon</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Senior Operator</div>
+          </div>
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: #eee; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--primary);">AP</div>
+        </div>
       </div>
     </header>
 
-    <!-- VIEW: Risk Overview -->
-    <div id="view-risk-overview" class="dashboard-view active">
-      <!-- Stats -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Projected Churn Rate</div>
-          <div class="stat-value">2.4%</div>
-          <div class="stat-trend trend-down">
-            <i data-lucide="trending-down" style="width: 12px;"></i> 0.8% from last week
+    <div class="view-container">
+      <!-- VIEW: Risk Overview -->
+      <div id="view-risk-overview" class="dashboard-view active">
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Projected Churn Rate</div>
+            <div class="stat-value">2.4%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Prevented Churn</div>
+            <div class="stat-value">142</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg. Retention ROI</div>
+            <div class="stat-value">12.5x</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Revenue at Risk</div>
+            <div class="stat-value">$14,200</div>
           </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Prevented Churn</div>
-          <div class="stat-value">142</div>
-          <div class="stat-trend trend-up">
-            <i data-lucide="trending-up" style="width: 12px;"></i> +24 users this month
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Avg. Retention ROI</div>
-          <div class="stat-value">12.5x</div>
-          <div class="stat-trend trend-up">
-            <i data-lucide="trending-up" style="width: 12px;"></i> +2.1x optimized
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Revenue at Risk</div>
-          <div class="stat-value">$14,200</div>
-          <div class="stat-trend trend-down">
-            <i data-lucide="trending-down" style="width: 12px;"></i> -$3k recovered
-          </div>
-        </div>
-      </div>
 
-      <!-- Main Grid -->
-      <div class="dashboard-grid">
-        <!-- Left: High Risk Customers -->
-        <div class="glass-panel">
-          <div class="panel-header">
-            <h2 class="panel-title">High Risk Customers (Top 10)</h2>
-            <div
-              style="background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700;">
-              12 NEW ENTRIES
-            </div>
-          </div>
-
-          <table class="user-table">
-            <thead>
-              <tr>
-                <th>Customer ID</th>
-                <th>Risk Score</th>
-                <th>Primary Driver</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="user-list">
-              <!-- Populated by JS -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Right: XAI & Action Panel -->
-        <div class="detail-panel">
-          <div class="glass-panel" id="xai-panel">
-            <div class="panel-header">
-              <h2 class="panel-title">XAI Churn Drivers</h2>
-              <i data-lucide="info" style="width: 16px; color: var(--text-muted);"></i>
-            </div>
-            <p id="no-selection-msg"
-              style="color: var(--text-muted); font-size: 0.875rem; text-align: center; padding: 2rem;">
-              Select a customer to visualize SHAP reasoning.
-            </p>
-            <div id="selection-details" style="display: none;">
-              <div id="driver-list"></div>
-
-              <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border);">
-                <p class="stat-label">Agentic Recommendation</p>
-                <p id="recommendation-text"
-                  style="font-size: 0.875rem; color: #fff; margin-top: 0.25rem; font-weight: 500;"></p>
-              </div>
-            </div>
-          </div>
-
+        <!-- Main Grid -->
+        <div class="dashboard-grid">
+          <!-- Left: High Risk Customers (Grid/Card Style) -->
           <div class="glass-panel">
             <div class="panel-header">
-              <h2 class="panel-title">RDE Action Gateway</h2>
-            </div>
-            <div class="action-buttons">
-              <button class="action-btn" id="btn-discount">
-                <i data-lucide="tag" style="width: 14px;"></i>
-                Gift Voucher
-              </button>
-              <button class="action-btn" id="btn-network">
-                <i data-lucide="signal" style="width: 14px;"></i>
-                Network Boost
-              </button>
-              <button class="action-btn btn-primary" id="btn-slm">
-                <i data-lucide="message-square" style="width: 14px;"></i>
-                Generate Hyperscale Message (SLM)
-              </button>
-            </div>
-
-            <div id="slm-box" style="display: none;">
-              <div class="slm-container">
-                <div class="slm-header">
-                  <span>AURA SLM Core v2.0</span>
-                  <span id="slm-status">Generating...</span>
-                </div>
-                <div id="slm-content"></div>
+              <h2 class="panel-title" style="font-size: 1rem;">High Risk Clusters</h2>
+              <div style="display: flex; gap: 0.5rem;">
+                <button class="action-btn" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;">View All</button>
               </div>
-              <button class="action-btn btn-primary"
-                style="margin-top: 0.5rem; background: var(--success); box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);"
-                id="btn-send">
-                <i data-lucide="send" style="width: 14px;"></i>
-                Send to Gateway
-              </button>
+            </div>
+            
+            <div id="user-list">
+              <!-- Populated by JS as cards -->
             </div>
           </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- VIEW: Customer Base -->
-    <div id="view-customer-base" class="dashboard-view" style="display: none;">
-      <div class="glass-panel">
-        <div class="panel-header">
-          <h2 class="panel-title">Enterprise Customer Directory</h2>
-          <div style="display: flex; gap: 0.5rem;">
-            <input type="text" placeholder="Search Customer ID..."
-              style="background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.8rem; color: white; font-size: 0.8rem; outline: none;">
-            <button class="action-btn"><i data-lucide="filter" style="width:14px;"></i> Filter</button>
-          </div>
-        </div>
-        <table class="user-table">
-          <thead>
-            <tr>
-              <th>Customer ID</th>
-              <th>Name</th>
-              <th>Tenure</th>
-              <th>Avg. Revenue</th>
-              <th>Current Status</th>
-            </tr>
-          </thead>
-          <tbody id="full-customer-list">
-            <!-- Mock full list -->
-          </tbody>
-        </table>
-      </div>
-    </div>
+          <!-- Right: XAI & Action Panel -->
+          <div class="detail-panel">
+            <div class="glass-panel" id="xai-panel">
+              <div class="panel-header">
+                <h2 class="panel-title" style="font-size: 1rem;">Reasoning Context</h2>
+                <i data-lucide="brain-circuit" style="width: 18px; color: var(--primary);"></i>
+              </div>
+              <p id="no-selection-msg" style="color: var(--text-muted); font-size: 0.875rem; text-align: center; padding: 2rem;">
+                Select a high-risk user card to view SHAP reasoning.
+              </p>
+              <div id="selection-details" style="display: none;">
+                <div id="driver-list"></div>
+                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                  <p class="stat-label">RDE LOGIC</p>
+                  <p id="recommendation-text" style="font-size: 0.8125rem; color: var(--text-main); margin-top: 0.25rem; font-weight: 600;"></p>
+                </div>
+              </div>
+            </div>
 
-    <!-- VIEW: Action Gateway -->
-    <div id="view-action-gateway" class="dashboard-view" style="display: none;">
-      <div class="glass-panel">
-        <div class="panel-header">
-          <h2 class="panel-title">Autonomous Action Logs</h2>
-        </div>
-        <div id="action-logs" style="padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
-          <!-- Content populated by JS -->
+            <div class="glass-panel">
+              <div class="panel-header">
+                <h2 class="panel-title" style="font-size: 1rem;">Action Gateway</h2>
+              </div>
+              <div class="action-buttons">
+                <button class="action-btn" id="btn-discount">
+                  <i data-lucide="tag" style="width: 16px;"></i>
+                  Voucher
+                </button>
+                <button class="action-btn" id="btn-network">
+                  <i data-lucide="signal" style="width: 16px;"></i>
+                  Boost
+                </button>
+                <button class="action-btn btn-primary" id="btn-slm">
+                  <i data-lucide="message-square" style="width: 16px;"></i>
+                  Generate SLM Message
+                </button>
+              </div>
+              
+              <div id="slm-box" style="display: none; margin-top: 1rem;">
+                <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 1rem;">
+                    <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                        <span>AURA SLM Core</span>
+                        <span id="slm-status" style="color: var(--primary);">GENERATING...</span>
+                    </div>
+                    <div id="slm-content" style="font-size: 0.8125rem; line-height: 1.5; min-height: 60px;"></div>
+                </div>
+                <button class="action-btn btn-primary" style="margin-top: 0.75rem;" id="btn-send">
+                  <i data-lucide="send" style="width: 14px;"></i>
+                  Confirm & Send
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- VIEW: XAI Analytics -->
-    <div id="view-xai-analytics" class="dashboard-view" style="display: none;">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Model Precision</div>
-          <div class="stat-value">84.2%</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">SHAP Consistency</div>
-          <div class="stat-value">0.92</div>
+      <!-- VIEW: Customer Base -->
+      <div id="view-customer-base" class="dashboard-view" style="display: none;">
+        <div class="glass-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Enterprise customer directory</h2>
+          </div>
+          <table class="user-table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="text-align: left; font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid var(--border);">
+                <th style="padding: 1rem;">ID</th>
+                <th style="padding: 1rem;">Name</th>
+                <th style="padding: 1rem;">Tenure</th>
+                <th style="padding: 1rem;">Avg Revenue</th>
+                <th style="padding: 1rem;">Current Status</th>
+              </tr>
+            </thead>
+            <tbody id="full-customer-list"></tbody>
+          </table>
         </div>
       </div>
-      <div class="glass-panel" style="margin-top: 1.5rem;">
-        <div class="panel-header">
-          <h2 class="panel-title">Global Feature Importance</h2>
-        </div>
-        <div style="padding: 1rem; display: flex; flex-direction: column; gap: 1rem;">
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.4rem;">
-              <span>Network Latency</span>
-              <span>85%</span>
-            </div>
-            <div style="height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
-              <div style="width: 85%; height: 100%; background: var(--danger);"></div>
-            </div>
-          </div>
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.4rem;">
-              <span>Competitor Price Gap</span>
-              <span>72%</span>
-            </div>
-            <div style="height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
-              <div style="width: 72%; height: 100%; background: var(--warning);"></div>
-            </div>
-          </div>
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.4rem;">
-              <span>Customer Tenure</span>
-              <span>45%</span>
-            </div>
-            <div style="height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
-              <div style="width: 45%; height: 100%; background: var(--glow-blue);"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- VIEW: Settings -->
-    <div id="view-settings" class="dashboard-view" style="display: none;">
-      <div class="glass-panel">
-        <div class="panel-header">
-          <h2 class="panel-title">System Configuration</h2>
+      <!-- VIEW: Action Gateway -->
+      <div id="view-action-gateway" class="dashboard-view" style="display: none;">
+        <div class="glass-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Autonomous Action Logs</h2>
+          </div>
+          <div id="action-logs" style="padding: 1rem; display: flex; flex-direction: column; gap: 1rem;"></div>
         </div>
-        <div style="padding: 1rem; display: flex; flex-direction: column; gap: 1.5rem;">
-          <div>
-            <h3 style="font-size: 1rem; margin-bottom: 0.25rem;">Model Sensitivity</h3>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Adjust the threshold for 'High Risk' classification.</p>
-            <input type="range" style="width: 100%;">
+      </div>
+
+      <!-- VIEW: XAI Analytics -->
+      <div id="view-xai-analytics" class="dashboard-view" style="display: none;">
+        <div class="dashboard-grid">
+            <div class="glass-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Churn Drivers Distribution</h2>
+                </div>
+                <div class="analytics-container">
+                    <div class="doughnut-chart">
+                        <div class="doughnut-inner">
+                            <span>85%</span>
+                            <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700;">NETWORK ACCURACY</div>
+                        </div>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: var(--primary);"></div>
+                            <span style="flex: 1;">Network Quality</span>
+                            <span style="font-weight: 700;">65%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: var(--warning);"></div>
+                            <span style="flex: 1;">Pricing/Offers</span>
+                            <span style="font-weight: 700;">20%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: var(--danger);"></div>
+                            <span style="flex: 1;">Billing Disputes</span>
+                            <span style="font-weight: 700;">15%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Global Feature Importance</h2>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; font-weight: 600; margin-bottom: 0.5rem;">
+                            <span>Call Drop Frequency</span>
+                            <span style="color: var(--primary);">+85%</span>
+                        </div>
+                        <div style="height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden;">
+                            <div style="width: 85%; height: 100%; background: var(--primary);"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; font-weight: 600; margin-bottom: 0.5rem;">
+                            <span>Price Per GB Gap</span>
+                            <span style="color: var(--warning);">+72%</span>
+                        </div>
+                        <div style="height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden;">
+                            <div style="width: 72%; height: 100%; background: var(--warning);"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; font-weight: 600; margin-bottom: 0.5rem;">
+                            <span>Support Ticket Open Time</span>
+                            <span style="color: var(--danger);">+45%</span>
+                        </div>
+                        <div style="height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden;">
+                            <div style="width: 45%; height: 100%; background: var(--danger);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <!-- VIEW: Settings -->
+      <div id="view-settings" class="dashboard-view" style="display: none;">
+        <div class="glass-panel" style="max-width: 600px;">
+          <div class="panel-header">
+            <h2 class="panel-title">System Configuration</h2>
           </div>
-          <div>
-            <h3 style="font-size: 1rem; margin-bottom: 0.25rem;">SLM Creativity</h3>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Control the randomness of generated messages.</p>
-            <input type="range" style="width: 100%;">
+          <div style="display: flex; flex-direction: column; gap: 2rem; padding: 1rem 0;">
+            <div>
+              <h3 style="font-size: 0.9375rem; margin-bottom: 0.5rem;">Model Sensitivity</h3>
+              <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem;">Threshold for churn risk triggering autonomous alerts.</p>
+              <input type="range" style="width: 100%; accent-color: var(--primary);">
+            </div>
+            <div>
+              <h3 style="font-size: 0.9375rem; margin-bottom: 0.5rem;">SLM Temperature</h3>
+              <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem;">Creativity level for personalized retention messages.</p>
+              <input type="range" style="width: 100%; accent-color: var(--primary);">
+            </div>
+            <button class="action-btn btn-primary" style="width: fit-content; padding: 0.75rem 2rem;">Save Changes</button>
           </div>
-          <button class="action-btn btn-primary" style="align-self: flex-start; margin-top: 1rem;">Save Settings</button>
         </div>
       </div>
     </div>
+  </main>
+
 
   </main>
 
