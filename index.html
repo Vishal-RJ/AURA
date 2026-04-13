@@ -44,9 +44,15 @@
     .nav-logo {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.4rem; font-weight: 700;
-      background: linear-gradient(135deg, var(--glow-blue), var(--glow-purple));
+      background: linear-gradient(90deg, var(--glow-blue), var(--glow-purple), var(--glow-blue));
+      background-size: 200% auto;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       letter-spacing: 0.05em;
+      animation: textShimmer 4s linear infinite;
+    }
+    @keyframes textShimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
     }
     .nav-links { display: flex; gap: 2rem; list-style: none; }
     .nav-links a {
@@ -61,14 +67,36 @@
     }
 
     /* ── SECTIONS ── */
-    section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 6rem 2rem 4rem; }
+    section { 
+      min-height: 100vh; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      position: relative; 
+      padding: 6rem 2rem 4rem;
+      background: transparent !important;
+      transition: background 0.5s ease;
+    }
+    section:hover {
+      background: rgba(255, 255, 255, 0.4) !important;
+      backdrop-filter: blur(5px);
+    }
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      background: #ffffff;
+    }
     .container { max-width: 1200px; width: 100%; margin: 0 auto; }
 
     /* ── HERO ── */
     #hero {
-      background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(249, 115, 22, 0.1) 0%, transparent 60%),
-                  radial-gradient(ellipse 60% 60% at 80% 50%, rgba(251, 146, 60, 0.05) 0%, transparent 60%),
-                  var(--bg);
+      background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(249, 115, 22, 0.1), transparent),
+                  transparent;
       text-align: center;
       flex-direction: column;
       position: relative;
@@ -84,9 +112,11 @@
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(4rem, 10vw, 8rem);
       font-weight: 900; letter-spacing: -0.02em; line-height: 1;
-      background: linear-gradient(135deg, var(--text) 30%, var(--glow-blue) 70%, var(--glow-purple));
+      background: linear-gradient(90deg, var(--text) 20%, var(--glow-blue) 40%, var(--glow-purple) 60%, var(--text) 80%);
+      background-size: 200% auto;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       margin-bottom: 0.5rem;
+      animation: textShimmer 5s linear infinite;
     }
     .hero-subtitle {
       font-size: clamp(0.9rem, 2vw, 1.1rem); font-weight: 400;
@@ -127,7 +157,7 @@
       animation: float 8s ease-in-out infinite;
       z-index: 1;
     }
-    .orb-1 { width: 400px; height: 400px; background: #f97316; top: 0%; left: -5%; animation-delay: 0s; }
+    .orb-1 { width: 400px; height: 400px; background: #f97316; top: 0%; left: -5%; animation-delay: 0s; display: none; }
     .orb-2 { width: 300px; height: 300px; background: #fb923c; top: 10%; right: -2%; animation-delay: 3s; }
     .orb-3 { width: 250px; height: 250px; background: #ea580c; bottom: 10%; left: 35%; animation-delay: 5s; }
     @keyframes float {
@@ -149,7 +179,7 @@
     .sec-desc { font-size: 1rem; color: var(--muted); line-height: 1.7; max-width: 560px; }
 
     /* ── PROBLEM ── */
-    #problem { background: var(--surface); }
+    #problem { background: transparent; }
     .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
     .problem-stat {
       grid-column: 1 / -1;
@@ -178,7 +208,7 @@
     .problem-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
 
     /* ── OBJECTIVES ── */
-    #objective { background: var(--bg); }
+    #objective { background: transparent; }
     .obj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
     .obj-card {
       background: var(--card); border: 1px solid var(--border);
@@ -196,7 +226,7 @@
     .obj-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
 
     /* ── SOLUTION ── */
-    #solution { background: var(--surface); }
+    #solution { background: transparent; }
     .sol-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
     .sol-card {
       background: var(--card); border: 1px solid var(--border);
@@ -219,7 +249,7 @@
     .sol-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
 
     /* ── ARCHITECTURE ── */
-    #architecture { background: var(--bg); flex-direction: column; }
+    #architecture { background: transparent; flex-direction: column; }
     .arch-pipeline {
       display: flex; align-items: stretch; gap: 0;
       width: 100%; margin-top: 3rem;
@@ -249,7 +279,7 @@
     .arch-step p { font-size: 0.78rem; color: var(--muted); line-height: 1.55; }
 
     /* ── DATASET ── */
-    #dataset { background: var(--surface); }
+    #dataset { background: transparent; }
     .dataset-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
     .ds-card {
       background: var(--card); border: 1px solid var(--border);
@@ -262,7 +292,7 @@
     .ds-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
 
     /* ── ML MODEL ── */
-    #mlmodel { background: var(--bg); }
+    #mlmodel { background: transparent; }
     .ml-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
     .ml-accuracy {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -302,7 +332,7 @@
     .ml-bullet p { font-size: 0.9rem; color: var(--text); line-height: 1.6; }
 
     /* ── XAI ── */
-    #xai { background: var(--surface); }
+    #xai { background: transparent; }
     .xai-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
     .xai-card {
       background: var(--card); border: 1px solid var(--border);
@@ -314,7 +344,7 @@
     .xai-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
 
     /* ── RETENTION ENGINE ── */
-    #retention { background: var(--bg); flex-direction: column; }
+    #retention { background: transparent; flex-direction: column; }
     .logic-card {
       background: linear-gradient(135deg, rgba(6,182,212,0.1), rgba(139,92,246,0.08));
       border: 1px solid rgba(6,182,212,0.25);
@@ -339,7 +369,7 @@
     .ret-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
 
     /* ── SLM ── */
-    #slm { background: var(--surface); }
+    #slm { background: transparent; }
     .slm-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
     .slm-card {
       background: var(--card); border: 1px solid var(--border);
@@ -352,7 +382,7 @@
 
     /* ── CONCLUSION ── */
     #conclusion {
-      background: radial-gradient(ellipse 80% 80% at 50% 120%, rgba(59,130,246,0.15) 0%, transparent 60%), var(--bg);
+      background: radial-gradient(ellipse 80% 80% at 50% 120%, rgba(249, 115, 22, 0.1), transparent), transparent;
       text-align: center; flex-direction: column;
     }
     .conc-stat {
@@ -408,9 +438,11 @@
 </head>
 <body>
 
+  <canvas id="bg-canvas"></canvas>
+
   <!-- NAV -->
   <nav>
-    <span class="nav-logo">A.U.R.A.</span>
+    <a href="index.html" style="text-decoration: none;"><span class="nav-logo">A.U.R.A.</span></a>
     <ul class="nav-links">
       <li><a href="#problem">Problem</a></li>
       <li><a href="#objective">Objectives</a></li>
@@ -1147,10 +1179,79 @@
       // ── Init ─────────────────────────────────────────────────────────────────
       render();
       window.addEventListener('resize', render);
-
     })();
-    // ── END FLOWCHART ENGINE ──────────────────────────────────────────────────
 
+    // ── MOTION GRAPHIC ENGINE (ORANGE PLEXUS) ──────────────────────────────────
+    (function initMotionGraphic() {
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      const particleCount = 60;
+      const connectionDistance = 150;
+      const mouse = { x: null, y: null, radius: 150 };
+
+      window.addEventListener('mousemove', (e) => {
+        mouse.x = e.x;
+        mouse.y = e.y;
+      });
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.vx = (Math.random() - 0.5) * 0.5;
+          this.vy = (Math.random() - 0.5) * 0.5;
+          this.size = Math.random() * 2 + 1;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(249, 115, 22, 0.5)';
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < connectionDistance) {
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(249, 115, 22, ${1 - distance / connectionDistance})`;
+              ctx.lineWidth = 0.5;
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+    // ── END MOTION GRAPHIC ENGINE ─────────────────────────────────────────────
   </script>
 </body>
 </html>
