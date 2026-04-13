@@ -10,17 +10,17 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #060918;
-      --surface: #0d1226;
-      --card: #111829;
-      --border: rgba(99,179,255,0.12);
-      --glow-blue: #3b82f6;
-      --glow-purple: #8b5cf6;
-      --glow-cyan: #06b6d4;
-      --glow-pink: #ec4899;
-      --text: #e2e8f0;
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --card: #ffffff;
+      --border: rgba(249,115,22,0.12);
+      --glow-blue: #f97316;
+      --glow-purple: #ea580c;
+      --glow-cyan: #fb923c;
+      --glow-pink: #f97316;
+      --text: #0f172a;
       --muted: #64748b;
-      --accent: #63b3ff;
+      --accent: #f97316;
     }
 
     html { scroll-behavior: smooth; }
@@ -37,7 +37,7 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 2.5rem;
-      background: rgba(6,9,24,0.85);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
     }
@@ -125,9 +125,9 @@
       filter: blur(80px); opacity: 0.35;
       animation: float 8s ease-in-out infinite;
     }
-    .orb-1 { width: 400px; height: 400px; background: var(--glow-blue); top: 5%; left: -10%; animation-delay: 0s; }
-    .orb-2 { width: 300px; height: 300px; background: var(--glow-purple); top: 15%; right: -5%; animation-delay: 3s; }
-    .orb-3 { width: 200px; height: 200px; background: var(--glow-cyan); bottom: 15%; left: 40%; animation-delay: 5s; }
+    .orb-1 { width: 400px; height: 400px; background: #f97316; top: 5%; left: -10%; animation-delay: 0s; }
+    .orb-2 { width: 300px; height: 300px; background: #fb923c; top: 15%; right: -5%; animation-delay: 3s; }
+    .orb-3 { width: 200px; height: 200px; background: #ea580c; bottom: 15%; left: 40%; animation-delay: 5s; }
     @keyframes float {
       0%, 100% { transform: translateY(0) scale(1); }
       50% { transform: translateY(-30px) scale(1.05); }
@@ -934,11 +934,11 @@
 
       // ── Color palette ────────────────────────────────────────────────────────
       const COLORS = {
-        cyan:   { fill:'rgba(6,182,212,0.12)',  border:'#06b6d4', glow:'rgba(6,182,212,0.5)',  text:'#67e8f9' },
-        blue:   { fill:'rgba(59,130,246,0.12)', border:'#3b82f6', glow:'rgba(59,130,246,0.5)', text:'#93c5fd' },
-        purple: { fill:'rgba(139,92,246,0.12)', border:'#8b5cf6', glow:'rgba(139,92,246,0.5)', text:'#c4b5fd' },
-        pink:   { fill:'rgba(236,72,153,0.12)', border:'#ec4899', glow:'rgba(236,72,153,0.5)', text:'#f9a8d4' },
-        green:  { fill:'rgba(16,185,129,0.12)', border:'#10b981', glow:'rgba(16,185,129,0.5)', text:'#6ee7b7' },
+        cyan:   { fill:'rgba(249,115,22,0.08)', border:'#f97316', glow:'rgba(249,115,22,0.3)', text:'#ea580c' },
+        blue:   { fill:'rgba(251,146,60,0.08)', border:'#fb923c', glow:'rgba(251,146,60,0.3)', text:'#f97316' },
+        purple: { fill:'rgba(234,88,12,0.08)',  border:'#ea580c', glow:'rgba(234,88,12,0.3)',  text:'#ea580c' },
+        pink:   { fill:'rgba(249,115,22,0.08)', border:'#f97316', glow:'rgba(249,115,22,0.3)', text:'#ea580c' },
+        green:  { fill:'rgba(16,185,129,0.08)', border:'#10b981', glow:'rgba(16,185,129,0.3)', text:'#10b981' },
       };
 
       // ── Layout constants ────────────────────────────────────────────────────

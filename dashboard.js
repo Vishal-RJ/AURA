@@ -215,6 +215,25 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// Navigation Logic
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('.section-content');
+
+navItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const sectionId = item.getAttribute('data-section');
+        if (!sectionId) return;
+
+        // Update Nav
+        navItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        // Update Section
+        sections.forEach(s => s.style.display = 'none');
+        document.getElementById(`section-${sectionId}`).style.display = 'block';
+    });
+});
+
 // Initial Load
 renderUsers();
 lucide.createIcons();
