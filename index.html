@@ -968,11 +968,11 @@
 
       // ── Color palette ────────────────────────────────────────────────────────
       const COLORS = {
-        cyan:   { fill:'rgba(249,115,22,0.08)', border:'#f97316', glow:'rgba(249,115,22,0.3)', text:'#ea580c' },
-        blue:   { fill:'rgba(251,146,60,0.08)', border:'#fb923c', glow:'rgba(251,146,60,0.3)', text:'#f97316' },
-        purple: { fill:'rgba(234,88,12,0.08)',  border:'#ea580c', glow:'rgba(234,88,12,0.3)',  text:'#ea580c' },
-        pink:   { fill:'rgba(249,115,22,0.08)', border:'#f97316', glow:'rgba(249,115,22,0.3)', text:'#ea580c' },
-        green:  { fill:'rgba(16,185,129,0.08)', border:'#10b981', glow:'rgba(16,185,129,0.3)', text:'#10b981' },
+        cyan:   { fill:'rgba(249,115,22,0.05)', border:'var(--accent)', glow:'var(--accent)', text:'var(--glow-purple)' },
+        blue:   { fill:'rgba(251,146,60,0.05)', border:'var(--accent)', glow:'var(--accent)', text:'var(--glow-blue)' },
+        purple: { fill:'rgba(234,88,12,0.05)',  border:'var(--glow-purple)', glow:'var(--glow-purple)', text:'var(--glow-purple)' },
+        pink:   { fill:'rgba(249,115,22,0.05)', border:'var(--accent)', glow:'var(--accent)', text:'var(--glow-purple)' },
+        green:  { fill:'rgba(16,185,129,0.05)', border:'#10b981', glow:'rgba(16,185,129,0.3)', text:'#10b981' },
       };
 
       // ── Layout constants ────────────────────────────────────────────────────
@@ -1220,7 +1220,7 @@
           updateTheme(entry.target.id);
         }
       });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.25 });
 
     document.querySelectorAll('section[id]').forEach(sec => themeObserver.observe(sec));
     // ── END THEME ENGINE ──────────────────────────────────────────────────────
