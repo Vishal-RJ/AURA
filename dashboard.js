@@ -83,19 +83,21 @@ function renderUsers() {
   userList.innerHTML = customers.map(user => `
     <tr class="user-row ${selectedCustomerId === user.id ? 'selected' : ''}" onclick="selectUser('${user.id}')">
       <td>
-        <div style="font-weight: 600;">${user.id}</div>
-        <div style="font-size: 0.75rem; color: var(--text-muted);">${user.name}</div>
+        <div class="customer-id-cell">
+            <span class="customer-id">${user.id}</span>
+            <span class="customer-name">${user.name}</span>
+        </div>
       </td>
       <td>
         <span class="risk-badge ${getRiskClass(user.riskScore)}">${user.riskScore}% Probability</span>
       </td>
       <td>
-        <div style="font-size: 0.875rem;">${user.driver}</div>
+        <div class="driver-cell-text">${user.driver}</div>
       </td>
       <td>
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <div style="width: 6px; height: 6px; border-radius: 50%; background: ${user.riskScore > 80 ? 'var(--danger)' : 'var(--warning)'};"></div>
-          <span style="font-size: 0.75rem;">Action Required</span>
+        <div class="action-status-cell">
+          <div class="status-indicator ${user.riskScore > 80 ? 'status-critical' : 'status-pending'}"></div>
+          <span>Action Required</span>
         </div>
       </td>
     </tr>
@@ -177,102 +179,7 @@ document.getElementById('btn-network').addEventListener('click', () => {
     showNotification("Network Priority Boost triggered for 48h.");
 });
 
-window.switchView = function(viewId, navElement) {
-  // Update Nav
-  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  navElement.classList.add('active');
-
-  // Update Views
-  document.querySelectorAll('.dashboard-view').forEach(v => v.style.display = 'none');
-  const targetView = document.getElementById('view-' + viewId);
-  if (targetView) targetView.style.display = 'block';
-
-  // Update Header
-  const title = document.getElementById('view-title');
-  const subtitle = document.getElementById('view-subtitle');
-
-  switch(viewId) {
-    case 'risk-overview':
-      title.innerText = "Retention Dashboard";
-      subtitle.innerText = "Welcome back, Operator. AURA has identified 12 new high-risk clusters.";
-      break;
-    case 'customer-base':
-      title.innerText = "Customer Base";
-      subtitle.innerText = "Complete directory of enterprise users and their current retention health.";
-      renderFullCustomerList();
-      break;
-    case 'action-gateway':
-      title.innerText = "Action Gateway";
-      subtitle.innerText = "Real-time log of autonomous actions triggered by AURA's RDE.";
-      renderActionLogs();
-      break;
-    case 'xai-analytics':
-      title.innerText = "XAI Analytics";
-      subtitle.innerText = "Deep dive into model transparency and global feature importance.";
-      break;
-    case 'settings':
-      title.innerText = "System Settings";
-      subtitle.innerText = "Configure AURA's neural threshold and agentic behavior.";
-      break;
-  }
-};
-
-function renderFullCustomerList() {
-    const list = document.getElementById('full-customer-list');
-    const mockFull = [
-        ...customers,
-        { id: "TEL-22104", name: "Alice Green", riskScore: 12, driver: "N/A", tenure: "4 yrs", revenue: "$120", status: "Healthy" },
-        { id: "TEL-99231", name: "Bob Smith", riskScore: 15, driver: "N/A", tenure: "1 yr", revenue: "$45", status: "Healthy" },
-        { id: "TEL-44122", name: "Charlie Day", riskScore: 8, driver: "N/A", tenure: "10 yrs", revenue: "$210", status: "Loyal" },
-    ];
-    list.innerHTML = mockFull.map(c => `
-        <tr>
-            <td><strong>${c.id}</strong></td>
-            <td>${c.name}</td>
-            <td>${c.tenure || '2 yrs'}</td>
-            <td>${c.revenue || '$85'}</td>
-            <td>
-                <span style="color: ${c.riskScore > 60 ? 'var(--danger)' : 'var(--success)'}; font-size: 0.8rem; font-weight: 600;">
-                    ${c.status || (c.riskScore > 60 ? 'High Risk' : 'Healthy')}
-                </span>
-            </td>
-        </tr>
-    `).join('');
-}
-
-const recentActions = [
-    { time: "10:42 AM", user: "TEL-49210", action: "Network Priority Boost", status: "Active" },
-    { time: "09:15 AM", user: "TEL-88321", action: "Value Match Offer Sent", status: "Pending" },
-    { time: "Yesterday", user: "TEL-12044", action: "Grace Period Extension", status: "Completed" },
-    { time: "Yesterday", user: "TEL-33981", action: "Loyalty Bonus Data", status: "Completed" },
-];
-
-function renderActionLogs() {
-    const container = document.getElementById('action-logs');
-    container.innerHTML = recentActions.map(a => `
-        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--border);">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <div style="font-size: 0.75rem; color: var(--text-muted); width: 70px;">${a.time}</div>
-                <div>
-                    <div style="font-weight: 600; font-size: 0.9rem;">${a.action}</div>
-                    <div style="font-size: 0.75rem; color: var(--text-muted);">Target: ${a.user}</div>
-                </div>
-            </div>
-            <div style="font-size: 0.75rem; font-weight: 700; color: ${a.status === 'Active' ? 'var(--glow-blue)' : (a.status === 'Pending' ? 'var(--warning)' : 'var(--success)')}">
-                ${a.status.toUpperCase()}
-            </div>
-        </div>
-    `).join('');
-}
-
 document.getElementById('btn-send').addEventListener('click', () => {
-    const user = customers.find(u => u.id === selectedCustomerId);
-    recentActions.unshift({
-        time: "Just Now",
-        user: selectedCustomerId,
-        action: "SLM Retention Message",
-        status: "Completed"
-    });
     showNotification("Retention message sent via SMS/Email Gateway.");
     slmBox.style.display = 'none';
 });
