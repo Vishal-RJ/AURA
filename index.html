@@ -57,7 +57,7 @@
     .nav-badge {
       font-size: 0.75rem; font-weight: 600;
       background: linear-gradient(135deg, var(--glow-blue), var(--glow-purple));
-      padding: 0.3rem 0.9rem; border-radius: 999px; color: #fff;
+      padding: 0.3rem 0.9rem; border-radius: 999px; color: #000;
     }
 
     /* ── SECTIONS ── */
@@ -66,11 +66,12 @@
 
     /* ── HERO ── */
     #hero {
-      background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(59,130,246,0.15) 0%, transparent 60%),
-                  radial-gradient(ellipse 60% 60% at 80% 50%, rgba(139,92,246,0.08) 0%, transparent 60%),
+      background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(249, 115, 22, 0.1) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 60% at 80% 50%, rgba(251, 146, 60, 0.05) 0%, transparent 60%),
                   var(--bg);
       text-align: center;
       flex-direction: column;
+      position: relative;
     }
     .hero-eyebrow {
       display: inline-block;
@@ -111,7 +112,7 @@
     .hero-cta a {
       display: inline-flex; align-items: center; gap: 0.5rem;
       background: linear-gradient(135deg, var(--glow-blue), var(--glow-purple));
-      color: #fff; text-decoration: none;
+      color: #000; text-decoration: none;
       padding: 0.85rem 2.2rem; border-radius: 999px;
       font-weight: 600; font-size: 1rem;
       box-shadow: 0 0 40px rgba(59,130,246,0.3);
@@ -122,12 +123,13 @@
     /* Floating orbs */
     .orb {
       position: absolute; border-radius: 50%; pointer-events: none;
-      filter: blur(80px); opacity: 0.35;
+      filter: blur(100px); opacity: 0.15;
       animation: float 8s ease-in-out infinite;
+      z-index: 1;
     }
-    .orb-1 { width: 400px; height: 400px; background: #f97316; top: 5%; left: -10%; animation-delay: 0s; }
-    .orb-2 { width: 300px; height: 300px; background: #fb923c; top: 15%; right: -5%; animation-delay: 3s; }
-    .orb-3 { width: 200px; height: 200px; background: #ea580c; bottom: 15%; left: 40%; animation-delay: 5s; }
+    .orb-1 { width: 400px; height: 400px; background: #f97316; top: 0%; left: -5%; animation-delay: 0s; }
+    .orb-2 { width: 300px; height: 300px; background: #fb923c; top: 10%; right: -2%; animation-delay: 3s; }
+    .orb-3 { width: 250px; height: 250px; background: #ea580c; bottom: 10%; left: 35%; animation-delay: 5s; }
     @keyframes float {
       0%, 100% { transform: translateY(0) scale(1); }
       50% { transform: translateY(-30px) scale(1.05); }
@@ -430,7 +432,7 @@
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
-    <div class="container fade-in">
+    <div class="container fade-in" style="position: relative; z-index: 10;">
       <div class="hero-eyebrow">RMKEC · 3rd Year</div>
       <h1 class="hero-title">A.U.R.A.</h1>
       <p class="hero-subtitle">Agentic User Retention Assistant</p>
@@ -611,11 +613,10 @@
         <div id="fc-nodes" style="position:relative;"></div>
       </div>
       <div id="fc-tooltip" style="
-        position:fixed; pointer-events:none; z-index:9999;
-        background:rgba(6,9,24,0.95); border:1px solid rgba(99,179,255,0.35);
+        background:rgba(255,255,255,0.95); border:1px solid var(--primary);
         border-radius:10px; padding:0.6rem 1rem; max-width:240px;
-        font-size:0.78rem; color:#e2e8f0; line-height:1.5;
-        box-shadow:0 0 24px rgba(59,130,246,0.25);
+        font-size:0.78rem; color:#000; line-height:1.5;
+        box-shadow:0 0 24px rgba(249,115,22,0.15);
         opacity:0; transition:opacity 0.15s; backdrop-filter:blur(12px);
       "></div>
     </div>
@@ -1073,7 +1074,7 @@
           path.setAttribute('stroke', `url(#grad-${from.group})`);
           path.setAttribute('stroke-width', '1.5');
           path.setAttribute('stroke-dasharray', '6 5');
-          path.setAttribute('opacity', '0.55');
+          path.setAttribute('opacity', '0.75');
           path.dataset.from = fromId;
           path.dataset.to   = toId;
 

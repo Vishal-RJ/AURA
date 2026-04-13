@@ -191,7 +191,7 @@ function showNotification(text) {
         bottom: 2rem;
         right: 2rem;
         background: var(--success);
-        color: white;
+        color: #000;
         padding: 1rem 2rem;
         border-radius: 12px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.5);
