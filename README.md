@@ -20,6 +20,7 @@
 ## 📌 Table of Contents
 
 - [Overview](#-overview)
+- [Recent Enhancements](#-recent-enhancements)
 - [The Problem](#-the-problem)
 - [Objectives](#-objectives)
 - [Proposed Solution](#-proposed-solution)
@@ -42,6 +43,16 @@
 Unlike traditional systems that act only after a customer has already left, A.U.R.A. predicts churn **30+ days in advance**, explains the reasoning behind every prediction using XAI, and automatically triggers personalized retention actions — all without human delay.
 
 > Built as an **in-house, data-sovereign system** — sensitive customer data never leaves the secure local environment.
+
+---
+
+## ✨ Recent Enhancements
+
+- **Brand Rejuvenation:** Shifted to a premium **White & Orange** high-contrast theme for professional aesthetics.
+- **Dynamic UI:** Implemented a full-page **Orange Plexus Motion Graphic** background for an immersive experience.
+- **Text Shimmer Effects:** Replaced generic gradients with sleek shimmer animations on logos and hero titles.
+- **Glassmorphic Sections:** All page sections now feature transparent, blurred backgrounds hovering over the motion graphics.
+- **Enterprise Ready:** Added a detailed [Hardware & Software Requirements Guide](AURA_Requirements.docx) for company-wide deployment.
 
 ---
 
@@ -77,6 +88,14 @@ A.U.R.A. is not just a predictor — it's a **full prescriptive retention ecosys
 | 📋 **Prescriptive Retention** | Not just *"who"* will leave — an AI strategy for *"how"* to retain them |
 | 🔍 **Explainable AI (XAI)** | SHAP/LIME integration decodes every AI decision for human agents |
 | 🔄 **End-to-End Pipeline** | Ingests live CDR (Call Detail Records) → outputs retention actions |
+
+---
+
+## 🖥️ Dashboard Preview
+
+The A.U.R.A. dashboard provides a real-time, high-contrast command center for telecom operators to track churn risk and trigger retention actions.
+
+![AURA Dashboard](assets/screenshot_dashboard.png)
 
 ---
 
