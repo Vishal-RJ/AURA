@@ -95,7 +95,33 @@ A.U.R.A. is not just a predictor — it's a **full prescriptive retention ecosys
 
 The A.U.R.A. dashboard provides a real-time, high-contrast command center for telecom operators to track churn risk and trigger retention actions.
 
-![AURA Dashboard](assets/screenshot_dashboard.png)
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td align="center" style="width: 50%; padding: 10px; border: none;">
+      <p><b>Risk Overview</b></p>
+      <img src="assets/screenshot_dash_risk.png" width="100%">
+    </td>
+    <td align="center" style="width: 50%; padding: 10px; border: none;">
+      <p><b>Customer Base</b></p>
+      <img src="assets/screenshot_dash_customers.png" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td align="center" style="width: 50%; padding: 10px; border: none;">
+      <p><b>Action Gateway</b></p>
+      <img src="assets/screenshot_dash_gateway.png" width="100%">
+    </td>
+    <td align="center" style="width: 50%; padding: 10px; border: none;">
+      <p><b>XAI Analytics</b></p>
+      <img src="assets/screenshot_dash_xai.png" width="100%">
+    </td>
+  </tr>
+</table>
+
+<div align="center">
+  <p><b>Engine Configuration (Settings)</b></p>
+  <img src="assets/screenshot_dash_settings.png" width="60%">
+</div>
 
 ---
 
