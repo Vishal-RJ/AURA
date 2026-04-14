@@ -1,15 +1,21 @@
 <div align="center">
 
-# ✦ A.U.R.A.
+<p align="center">
+  <b>RMKEC · 3rd Year</b>
+</p>
+
+# A.U.R.A.
 ### Agentic User Retention Assistant
 
 **Empowering Telecoms with Agentic Intelligence to Predict, Reason, and Act before a Customer Leaves.**
 
+<br />
+
 ![Hero Banner](assets/screenshot_hero.png)
 
-[![RMKEC](https://img.shields.io/badge/RMKEC-ECE%203rd%20Year-blue?style=for-the-badge&logo=graduation-cap)](.)
-[![ML Model](https://img.shields.io/badge/Accuracy-85%25-brightgreen?style=for-the-badge&logo=scikit-learn)](.)
-[![HTML](https://img.shields.io/badge/Frontend-HTML%2FCSS%2FJS-orange?style=for-the-badge&logo=html5)](.)
+[![RMKEC](https://img.shields.io/badge/RMKEC-ECE%203rd%20Year-F97316?style=for-the-badge&logo=graduation-cap)](.)
+[![ML Model](https://img.shields.io/badge/Accuracy-85%25-orange?style=for-the-badge&logo=scikit-learn)](.)
+[![HTML](https://img.shields.io/badge/Frontend-HTML%2FCSS%2FJS-white?style=for-the-badge&logo=html5)](.)
 [![XAI](https://img.shields.io/badge/XAI-SHAP%2FLIME-purple?style=for-the-badge)](.)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey?style=for-the-badge)](LICENSE)
 
